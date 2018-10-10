@@ -1,4 +1,5 @@
 var controllers = require('./controllers');
+var Joi = require('joi');
 
 module.exports = [
   {
@@ -10,5 +11,22 @@ module.exports = [
     method: 'GET',
     path: '/salute/{name}',
     handler: controllers.users.salute
+  },
+  {
+    method: 'GET',
+    path: '/breweries',
+    handler: controllers.brewery.findAll
+  },
+  {
+    method: 'GET',
+    path: '/brewery',
+    handler: controllers.brewery.getBrewery,
+    options: {
+        validate: {
+            query: {
+                idBrewery: Joi.string().required()
+            }
+        }
+    }
   }
 ];

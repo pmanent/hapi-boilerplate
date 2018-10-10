@@ -1,20 +1,19 @@
 'use strict';
-
 var Hapi = require('hapi');
-
 var path = require('path');
 var settings = require('config');
-
 var routes = require('./routes');
 var plugins = require('./plugins');
 var models = require('./models');
+
+
 
 const internals = {
   templatePath: '.'
 };
 
 const server = new Hapi.Server({
-  host:settings.host,
+  host:settings.database.host,
   port: settings.port
 });
 
@@ -47,7 +46,7 @@ internals.main = async () => {
   initDb(()=>{
     console.log('Server is running at ' + server.info.uri);
   });
- 
+
 }
 
 internals.main();

@@ -3,8 +3,35 @@
 var fs        = require("fs");
 var path      = require("path");
 var Sequelize = require("sequelize");
-var config    = require("config").database;
-var sequelize = new Sequelize(config.database, config.username, config.password, config);
+var config    = require("config");
+console.log(config);
+const sequelize = new Sequelize(
+'mysql://'+config.database.username+':'+config.database.password+'@localhost:3306/'+config.database.database,
+  {
+  host: 'localhost',
+  dialect: 'mysql',
+  define: {
+    //prevent sequelize from pluralizing table names
+    freezeTableName: true
+  },
+  database: config.database.database,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
+});
+console.log('Sequelize created database : '+config.database.database);
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
 var db        = {};
 
 fs
